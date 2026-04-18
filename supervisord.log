@@ -1,0 +1,83 @@
+2026-04-18 16:35:09,828 INFO supervisord started with pid 132
+2026-04-18 16:35:10,831 INFO spawned: 'laravel-horizon' with pid 134
+2026-04-18 16:35:10,832 INFO spawned: 'laravel-reverb' with pid 135
+2026-04-18 16:35:10,834 INFO spawned: 'laravel-scheduler_00' with pid 136
+2026-04-18 16:35:10,836 INFO spawned: 'supercronic' with pid 137
+2026-04-18 16:35:10,838 INFO spawned: 'vite-dev' with pid 138
+2026-04-18 16:35:11,066 WARN exited: vite-dev (exit status 1; not expected)
+2026-04-18 16:35:12,346 INFO success: laravel-horizon entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:35:12,347 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:35:12,347 INFO success: laravel-scheduler_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:35:12,348 INFO success: supercronic entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:35:12,352 INFO spawned: 'vite-dev' with pid 170
+2026-04-18 16:35:12,545 WARN exited: vite-dev (exit status 1; not expected)
+2026-04-18 16:35:14,551 INFO spawned: 'vite-dev' with pid 201
+2026-04-18 16:35:14,753 WARN exited: vite-dev (exit status 1; not expected)
+2026-04-18 16:35:17,767 INFO spawned: 'vite-dev' with pid 221
+2026-04-18 16:35:18,006 WARN exited: vite-dev (exit status 1; not expected)
+2026-04-18 16:35:19,009 INFO gave up: vite-dev entered FATAL state, too many start retries too quickly
+2026-04-18 16:36:01,946 INFO supervisord started with pid 95
+2026-04-18 16:36:02,949 INFO spawned: 'laravel-horizon' with pid 97
+2026-04-18 16:36:02,951 INFO spawned: 'laravel-reverb' with pid 98
+2026-04-18 16:36:02,953 INFO spawned: 'laravel-scheduler_00' with pid 99
+2026-04-18 16:36:02,955 INFO spawned: 'supercronic' with pid 100
+2026-04-18 16:36:02,961 INFO spawned: 'vite-dev' with pid 101
+2026-04-18 16:36:03,330 WARN exited: vite-dev (exit status 1; not expected)
+2026-04-18 16:36:04,671 INFO success: laravel-horizon entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:36:04,672 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:36:04,672 INFO success: laravel-scheduler_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:36:04,673 INFO success: supercronic entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:36:04,680 INFO spawned: 'vite-dev' with pid 134
+2026-04-18 16:36:04,870 WARN exited: vite-dev (exit status 1; not expected)
+2026-04-18 16:36:06,878 INFO spawned: 'vite-dev' with pid 164
+2026-04-18 16:36:07,033 WARN exited: vite-dev (exit status 1; not expected)
+2026-04-18 16:36:10,043 INFO spawned: 'vite-dev' with pid 184
+2026-04-18 16:36:10,211 WARN exited: vite-dev (exit status 1; not expected)
+2026-04-18 16:36:11,214 INFO gave up: vite-dev entered FATAL state, too many start retries too quickly
+2026-04-18 16:37:03,774 WARN exited: laravel-reverb (exit status 1; not expected)
+2026-04-18 16:37:04,801 INFO spawned: 'laravel-reverb' with pid 698
+2026-04-18 16:37:04,853 WARN exited: laravel-reverb (exit status 255; not expected)
+2026-04-18 16:37:05,883 INFO spawned: 'laravel-reverb' with pid 699
+2026-04-18 16:37:05,923 WARN exited: laravel-reverb (exit status 255; not expected)
+2026-04-18 16:37:07,929 INFO spawned: 'laravel-reverb' with pid 702
+2026-04-18 16:37:07,977 WARN exited: laravel-reverb (exit status 255; not expected)
+2026-04-18 16:37:10,984 INFO spawned: 'laravel-reverb' with pid 703
+2026-04-18 16:37:11,020 WARN exited: laravel-reverb (exit status 255; not expected)
+2026-04-18 16:37:12,022 INFO gave up: laravel-reverb entered FATAL state, too many start retries too quickly
+2026-04-18 16:40:22,763 WARN received SIGTERM indicating exit request
+2026-04-18 16:40:22,764 INFO waiting for laravel-horizon, laravel-scheduler_00, supercronic to die
+2026-04-18 16:40:28,737 INFO supervisord started with pid 127
+2026-04-18 16:40:29,740 INFO spawned: 'laravel-horizon' with pid 129
+2026-04-18 16:40:29,741 INFO spawned: 'laravel-reverb' with pid 130
+2026-04-18 16:40:29,743 INFO spawned: 'laravel-scheduler_00' with pid 131
+2026-04-18 16:40:29,744 INFO spawned: 'supercronic' with pid 132
+2026-04-18 16:40:29,746 INFO spawned: 'vite-dev' with pid 133
+2026-04-18 16:40:31,515 INFO success: laravel-horizon entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:40:31,516 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:40:31,518 INFO success: laravel-scheduler_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:40:31,518 INFO success: supercronic entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:40:31,519 INFO success: vite-dev entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:41:18,855 WARN received SIGTERM indicating exit request
+2026-04-18 16:41:18,855 INFO waiting for laravel-horizon, laravel-reverb, laravel-scheduler_00, supercronic, vite-dev to die
+2026-04-18 16:41:18,992 WARN stopped: vite-dev (terminated by SIGTERM)
+2026-04-18 16:41:18,994 WARN killing 'supercronic' (132) with SIGKILL
+2026-04-18 16:41:18,994 INFO stopped: supercronic (exit status 0)
+2026-04-18 16:41:18,997 WARN stopped: laravel-scheduler_00 (terminated by SIGTERM)
+2026-04-18 16:41:19,074 INFO stopped: laravel-reverb (exit status 0)
+2026-04-18 16:41:23,397 INFO supervisord started with pid 169
+2026-04-18 16:41:24,403 INFO spawned: 'laravel-horizon' with pid 171
+2026-04-18 16:41:24,407 INFO spawned: 'laravel-reverb' with pid 172
+2026-04-18 16:41:24,410 INFO spawned: 'laravel-scheduler_00' with pid 173
+2026-04-18 16:41:24,412 INFO spawned: 'supercronic' with pid 174
+2026-04-18 16:41:24,413 INFO spawned: 'vite-dev' with pid 175
+2026-04-18 16:41:26,051 INFO success: laravel-horizon entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:41:26,051 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:41:26,052 INFO success: laravel-scheduler_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:41:26,052 INFO success: supercronic entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:41:26,053 INFO success: vite-dev entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:42:24,977 INFO exited: laravel-reverb (exit status 0; expected)
+2026-04-18 16:42:26,008 INFO spawned: 'laravel-reverb' with pid 478
+2026-04-18 16:42:27,326 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2026-04-18 16:43:26,365 INFO exited: laravel-reverb (exit status 0; expected)
+2026-04-18 16:43:27,369 INFO spawned: 'laravel-reverb' with pid 827
+2026-04-18 16:43:28,611 INFO success: laravel-reverb entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
