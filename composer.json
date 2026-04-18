@@ -16,6 +16,7 @@
         "aaix/laravel-patches": "^1.0",
         "aaix/laravel-smart-log": "^1.0",
         "http-interop/http-factory-guzzle": "^1.2",
+        "intervention/image": "^4.0",
         "laravel-notification-channels/webpush": "^10.5",
         "laravel/ai": "^0.5.1",
         "laravel/fortify": "^1.34",
