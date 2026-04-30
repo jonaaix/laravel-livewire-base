@@ -12,6 +12,7 @@
         "php": "^8.3",
         "aaix/eloquent-translatable": "^1.1",
         "aaix/laravel-ai-costs": "^1.0",
+        "aaix/laravel-countries": "*",
         "aaix/laravel-easy-backups": "^1.1",
         "aaix/laravel-patches": "^1.0",
         "aaix/laravel-smart-log": "^1.0",

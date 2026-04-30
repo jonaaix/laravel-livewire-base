@@ -396,23 +396,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 
 ## Skills Activation
 
-This project has domain-specific skills available. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
-
-- `ai-sdk-development` — TRIGGER when working with ai-sdk which is Laravel official first-party AI SDK. Activate when building, editing AI agents, chatbots, text generation, image generation, audio/TTS, transcription/STT, embeddings, RAG, vector stores, reranking, structured output, streaming, conversation memory, tools, queueing, broadcasting, and provider failover across OpenAI, Anthropic, Gemini, Azure, Groq, xAI, DeepSeek, Mistral, Ollama, ElevenLabs, Cohere, Jina, and VoyageAI. Invoke when the user references ai-sdk, the `Laravel\Ai\` namespace, or this project's AI features — not for Prism PHP or other AI packages used directly.
-- `fortify-development` — ACTIVATE when the user works on authentication in Laravel. This includes login, registration, password reset, email verification, two-factor authentication (2FA/TOTP/QR codes/recovery codes), profile updates, password confirmation, or any auth-related routes and controllers. Activate when the user mentions Fortify, auth, authentication, login, register, signup, forgot password, verify email, 2FA, or references app/Actions/Fortify/, CreateNewUser, UpdateUserProfileInformation, FortifyServiceProvider, config/fortify.php, or auth guards. Fortify is the frontend-agnostic authentication backend for Laravel that registers all auth routes and controllers. Also activate when building SPA or headless authentication, customizing login redirects, overriding response contracts like LoginResponse, or configuring login throttling. Do NOT activate for Laravel Passport (OAuth2 API tokens), Socialite (OAuth social login), or non-auth Laravel features.
-- `laravel-best-practices` — Apply this skill whenever writing, reviewing, or refactoring Laravel PHP code. This includes creating or modifying controllers, models, migrations, form requests, policies, jobs, scheduled commands, service classes, and Eloquent queries. Triggers for N+1 and query performance issues, caching strategies, authorization and security patterns, validation, error handling, queue and job configuration, route definitions, and architectural decisions. Also use for Laravel code reviews and refactoring existing Laravel code to follow best practices. Covers any task involving Laravel backend PHP code patterns.
-- `configuring-horizon` — Use this skill whenever the user mentions Horizon by name in a Laravel context. Covers the full Horizon lifecycle: installing Horizon (horizon:install, Sail setup), configuring config/horizon.php (supervisor blocks, queue assignments, balancing strategies, minProcesses/maxProcesses), fixing the dashboard (authorization via Gate::define viewHorizon, blank metrics, horizon:snapshot scheduling), and troubleshooting production issues (worker crashes, timeout chain ordering, LongWaitDetected notifications, waits config). Also covers job tagging and silencing. Do not use for generic Laravel queues without Horizon, SQS or database drivers, standalone Redis setup, Linux supervisord, Telescope, or job batching.
-- `scout-development` — Develops full-text search with Laravel Scout. Activates when installing or configuring Scout; choosing a search engine (Algolia, Meilisearch, Typesense, Database, Collection); adding the Searchable trait to models; customizing toSearchableArray or searchableAs; importing or flushing search indexes; writing search queries with where clauses, pagination, or soft deletes; configuring index settings; troubleshooting search results; or when the user mentions Scout, full-text search, search indexing, or search engines in a Laravel project. Make sure to use this skill whenever the user works with search functionality in Laravel, even if they don't explicitly mention Scout.
-- `fluxui-development` — Use this skill for Flux UI development in Livewire applications only. Trigger when working with <flux:*> components, building or customizing Livewire component UIs, creating forms, modals, tables, or other interactive elements. Covers: flux: components (buttons, inputs, modals, forms, tables, date-pickers, kanban, badges, tooltips, etc.), component composition, Tailwind CSS styling, Heroicons/Lucide icon integration, validation patterns, responsive design, and theming. Do not use for non-Livewire frameworks or non-component styling.
-- `livewire-development` — Use for any task or question involving Livewire. Activate if user mentions Livewire, wire: directives, or Livewire-specific concepts like wire:model, wire:click, wire:sort, or islands, invoke this skill. Covers building new components, debugging reactivity issues, real-time form validation, drag-and-drop, loading states, migrating from Livewire 3 to 4, converting component formats (SFC/MFC/class-based), and performance optimization. Do not use for non-Livewire reactive UI (React, Vue, Alpine-only, Inertia.js) or standard Laravel forms without Livewire.
-- `volt-development` — Develops single-file Livewire components with Volt. Activates when creating Volt components, converting Livewire to Volt, working with @volt directive, functional or class-based Volt APIs; or when the user mentions Volt, single-file components, functional Livewire, or inline component logic in Blade files.
-- `pest-testing` — Use this skill for Pest PHP testing in Laravel projects only. Trigger whenever any test is being written, edited, fixed, or refactored — including fixing tests that broke after a code change, adding assertions, converting PHPUnit to Pest, adding datasets, and TDD workflows. Always activate when the user asks how to write something in Pest, mentions test files or directories (tests/Feature, tests/Unit, tests/Browser), or needs browser testing, smoke testing multiple pages for JS errors, or architecture tests. Covers: test()/it()/expect() syntax, datasets, mocking, browser testing (visit/click/fill), smoke testing, arch(), Livewire component tests, RefreshDatabase, and all Pest 4 features. Do not use for factories, seeders, migrations, controllers, models, or non-test PHP code.
-- `tailwindcss-development` — Always invoke when the user's message includes 'tailwind' in any form. Also invoke for: building responsive grid layouts (multi-column card grids, product grids), flex/grid page structures (dashboards with sidebars, fixed topbars, mobile-toggle navs), styling UI components (cards, tables, navbars, pricing sections, forms, inputs, badges), adding dark mode variants, fixing spacing or typography, and Tailwind v3/v4 work. The core use case: writing or fixing Tailwind utility classes in HTML templates (Blade, JSX, Vue). Skip for backend PHP logic, database queries, API routes, JavaScript with no HTML/CSS component, CSS file audits, build tool configuration, and vanilla CSS.
-- `echo-development` — Develops real-time broadcasting with Laravel Echo. Activates when setting up broadcasting (Reverb, Pusher, Ably); creating ShouldBroadcast events; defining broadcast channels (public, private, presence, encrypted); authorizing channels; configuring Echo; listening for events; implementing client events (whisper); setting up model broadcasting; broadcasting notifications; or when the user mentions broadcasting, Echo, WebSockets, real-time events, Reverb, or presence channels.
-- `laravel-pdf` — Generate PDFs from Blade views or HTML using spatie/laravel-pdf. Covers creating, formatting, saving, downloading, and testing PDFs with the Browsershot, Cloudflare, or DOMPDF driver.
-- `eloquent-audit` — This skill should be used when the user asks to "audit Eloquent code", "review Eloquent usage", "check model code", "find N+1 queries", "find query performance issues", "Eloquent review", or wants to analyze a Laravel project's Eloquent usage for improvements. Scans relevant Laravel source files and reports findings with actionable suggestions.
-- `queues-audit` — This skill should be used when the user asks to "audit Laravel queues", "review queue implementation", "check job code", "find queue issues", "queue review", or wants to analyze a Laravel project's queue/job usage for improvements. Scans all PHP source files and reports findings with actionable suggestions.
-- `structure-audit` — This skill should be used when the user asks to "audit Laravel project structure", "review project architecture", "check code organization", "find over-engineering", "find fat controllers", "structure review", or wants to analyze a Laravel project for structural improvements. Scans all PHP source files and reports findings with actionable suggestions.
+This project has domain-specific skills available in `**/skills/**`. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
 
 ## Conventions
 
@@ -563,7 +547,46 @@ This project has domain-specific skills available. You MUST activate the relevan
 ## Pest
 
 - This project uses Pest for testing. Create tests: `php artisan make:test --pest {name}`.
+- The `{name}` argument should not include the test suite directory. Use `php artisan make:test --pest SomeFeatureTest` instead of `php artisan make:test --pest Feature/SomeFeatureTest`.
 - Run tests: `php artisan test --compact` or filter: `php artisan test --compact --filter=testName`.
 - Do NOT delete tests without approval.
+
+=== aaix/laravel-countries rules ===
+
+## aaix/laravel-countries
+
+Country data + translations (astrotomic/laravel-translatable) for Laravel. 245 countries, 9 locales (ar, de, en, es, fr, it, nl, pt, ru), idempotent seeders, zero-touch install.
+
+### Install & seed
+
+`composer require aaix/laravel-countries` → `php artisan migrate` → register the master seeder in the app's own `DatabaseSeeder`:
+
+<code-snippet name="Seed via master seeder" lang="php">
+$this->call(\Aaix\LaravelCountries\Database\Seeders\DatabaseSeeder::class);
+</code-snippet>
+
+The master seeder is idempotent — safe to re-run on every deploy.
+
+### Ergonomic helpers
+
+The country model lives at `Aaix\LaravelCountries\Models\Country` (not `App\Models\Country`).
+
+<code-snippet name="Helpers for common cases" lang="php">
+use Aaix\LaravelCountries\Models\Country;
+
+Country::getByCode('DE');          // alpha-2 lookup, case-insensitive
+$country->nameInLang('de');        // name in explicit locale
+$country->native_name;             // country's own language ("Deutschland", "日本", ...)
+Country::listInLang('de');         // [iso => name] for dropdowns, N+1-free
+</code-snippet>
+
+Standard Eloquent scopes: `whereIso`, `whereIsoAlpha2`, `whereIsoAlpha3`, `whereIsoNumeric`, `whereCurrency`, `whereBorders`, `whereDomain`, `whereDomains`, `whereLanguages`, `whereFlagColors`, `wherePhoneCode`, `whereIndependenceDay`, `whereStatistics`, `whereName`, `whereSlug`, `whereWmo`. Accessors include `$country->name` (current app locale, auto-fallback), `$country->official_name` (locale-independent), `$country->flag_emoji`, `$country->flag_colors` (plus `flag_colors_hex`, `flag_colors_rgb`, `flag_colors_cmyk`, `flag_colors_hsl`, `flag_colors_hsv`, `flag_colors_pantone`, `flag_colors_web`, `flag_colors_contrast`), `$country->currency`, `$country->borders`, `$country->timezones`. Relations: `region`, `coordinates`, `extras`, `geographical`.
+
+### Avoid
+
+- **`php artisan w-countries:install` / `w-countries:languages`** — these commands do not exist. Install is `composer require` + `migrate` + seed.
+- **`vendor:publish`** for migrations or config — not supported, not needed. Migrations auto-load from the service provider.
+- **`Country::all()` + `->translate($locale)->name` in a loop** — use `Country::listInLang($locale)` instead (single query).
+- **Editing per-country seeder files** (`DE_Germany.php` etc.) to set `native_name` — keep those files merge-friendly with upstream. `native_name` is populated by the separate `NativeNamesSeeder`.
 
 </laravel-boost-guidelines>

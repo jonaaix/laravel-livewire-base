@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Horizon\Http\Middleware\Authenticate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $router = $this->app->make('router');
+        $router->middlewareGroup('horizon', ['web', Authenticate::class]);
+        \Gate::define('viewLogViewer', static fn ($user) => $user?->hasRole('admin'));
+
         $this->configureDefaults();
     }
 

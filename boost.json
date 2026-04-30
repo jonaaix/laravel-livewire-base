@@ -2,11 +2,13 @@
     "agents": [
         "claude_code"
     ],
+    "cloud": false,
     "guidelines": true,
     "mcp": true,
-    "nightwatch_mcp": false,
+    "nightwatch": false,
     "packages": [
-        "spatie/laravel-pdf"
+        "spatie/laravel-pdf",
+        "aaix/laravel-countries"
     ],
     "sail": false,
     "skills": [
