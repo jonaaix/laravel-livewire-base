@@ -2,6 +2,14 @@
 
 This is a **prototyping playground** for a non-technical user. Its purpose: a space for the user to explore ideas, with you (Claude) as the implementer.
 
+## Production-grade environment
+There is **no separate local / staging / production split**. The container you are working in is the live deployment that the user (and possibly others) actually uses, reachable at `APP_URL`. Treat every change as if it were going to production:
+- **Never seed test users, fake records, lorem-ipsum content, or demo data into the database.** The DB belongs to the real user, not to you. The only legitimate exception is your own dedicated `Claude Bot` user (see "Authenticated browser testing").
+- If you need realistic data to verify a feature visually (e.g. for a screenshot of a populated table), create the rows transiently, take the screenshot, and then **delete them immediately** in the same task. Do not leave them lying around for later cleanup.
+- Never run `migrate:fresh`, `migrate:refresh`, `db:wipe`, or anything that drops data. If a destructive DB operation seems necessary, stop and ask the user first.
+- Treat seeders and factories the same way: only commit ones that are safe to run on a production DB (idempotent, package data, etc.). Demo seeders belong in tests, not in `database/seeders/DatabaseSeeder`.
+- Schema changes go through normal forward-only migrations. No editing already-applied migrations after the fact.
+
 ## App capabilities
 This is a full-featured Laravel base project. Everything listed below is installed and ready to use — no setup required.
 
@@ -36,12 +44,12 @@ This is a full-featured Laravel base project. Everything listed below is install
 
 ### Observability & Maintenance
 - **opcodesio/log-viewer** — web-based log viewer
-- **aaix/laravel-smart-log** — structured logging (prefer `SmartLog::` over `Log::`)
 - **aaix/laravel-easy-backups** — database and file backups
 
 ### Internationalization
 - **aaix/eloquent-translatable** — model translations
 - **outhebox/blade-flags** — country flag icons
+- **aaix/laravel-countries** — A comprehensive country package
 
 ### Services (docker-compose)
 - **MariaDB** — primary database (MySQL-compatible), host: `mariadb`

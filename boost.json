@@ -8,7 +8,11 @@
     "nightwatch": false,
     "packages": [
         "spatie/laravel-pdf",
-        "aaix/laravel-countries"
+        "aaix/laravel-countries",
+        "aaix/eloquent-translatable",
+        "aaix/laravel-ai-costs",
+        "aaix/laravel-easy-backups",
+        "aaix/laravel-patches"
     ],
     "sail": false,
     "skills": [
@@ -23,6 +27,12 @@
         "pest-testing",
         "tailwindcss-development",
         "echo-development",
+        "eloquent-translatable",
+        "laravel-ai-costs-development",
+        "seeding-countries",
+        "using-countries",
+        "easy-backups-development",
+        "laravel-patches",
         "laravel-pdf",
         "eloquent-audit",
         "queues-audit",
