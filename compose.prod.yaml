@@ -1,6 +1,10 @@
 # WARNING: Make sure the project-folder-name is unique on your server!
 # You should disable port-exposure in production!
 
+networks:
+    main-proxy:
+        external: true
+
 volumes:
     db_volume:
     redis_volume:
@@ -21,11 +25,18 @@ services:
             DEV_NPM_RUN_DEV: true
             ENABLE_HORIZON_WORKER: true
             ENABLE_REVERB_SERVER: true
-        ports:
-            - "8008:8000" # php
-            - "5178:5178" # vite
-            - "8088:8080" # reverb
+            ENABLE_CLAUDE_THREADS: true
+        labels:
+            caddy_0: ${LARAVEL_DOMAIN}
+            caddy_0.reverse_proxy: "{{upstreams 8000}}"
+            caddy_0.encode: zstd gzip
+
+            caddy_1: ws.${LARAVEL_DOMAIN}
+            caddy_1.reverse_proxy: "{{upstreams 8080}}"
         restart: unless-stopped
+        networks:
+            - main-proxy
+            - default
         depends_on:
             - mariadb
             - redis
@@ -47,8 +58,6 @@ services:
             MARIADB_USER: ${DB_USERNAME}
             MARIADB_PASSWORD: ${DB_PASSWORD}
             MARIADB_DATABASE: ${DB_DATABASE}
-        ports:
-            - "3308:3306"
         restart: unless-stopped
 
     redis:
@@ -56,14 +65,10 @@ services:
         volumes:
             - redis_volume:/data
         command: [ "redis-server", "--requirepass", "${REDIS_PASSWORD}" ]
-        # ports:
-        #     - "6379:6379"
         restart: unless-stopped
 
     meilisearch:
         image: getmeili/meilisearch:latest
-        # ports:
-        #     - "7700:7700"
         environment:
             MEILI_MASTER_KEY: ${MEILISEARCH_KEY}
             MEILI_NO_ANALYTICS: "true"
@@ -72,13 +77,19 @@ services:
             - meili_volume:/meili_data
         restart: unless-stopped
 
-#    pma:
-#        image: phpmyadmin/phpmyadmin:latest
-#        environment:
-#            PMA_HOST: mysql
-#            PMA_PORT: 3306
-#            APACHE_PORT: 8080
-#            UPLOAD_LIMIT: 1G
-#        restart: unless-stopped
-#        depends_on:
-#            - mariadb
+    pma:
+        image: phpmyadmin/phpmyadmin:latest
+        environment:
+            PMA_HOST: mysql
+            PMA_PORT: 3306
+            APACHE_PORT: 8080
+            UPLOAD_LIMIT: 1G
+        restart: unless-stopped
+        labels:
+            caddy: ${PMA_DOMAIN}
+            caddy.reverse_proxy: "{{upstreams 8080}}"
+        networks:
+            - main-proxy
+            - default
+        depends_on:
+            - mariadb
