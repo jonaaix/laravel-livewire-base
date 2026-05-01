@@ -5,7 +5,7 @@ git clone --depth=1 --branch=main https://github.com/jonaaix/laravel-livewire-ba
 cd <yourname>
 
 # Initialize Claude-Auto Repo
-rm -rf ./laravel-livewire-base/.git \
+rm -rf ./.git \
 && git init \
 && git add . \
 && git commit -m "Initial commit" \
