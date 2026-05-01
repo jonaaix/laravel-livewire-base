@@ -37,7 +37,7 @@ Provide code only when code changes or code drafts are explicitly requested.
 - **Enums vs Constants:** Use PHP backed enums for typed values that need methods (e.g., `label()`, `icon()`). Use `const` classes for simple key-value lookups (IDs, disk names, icons). Follow existing conventions — both patterns coexist in this codebase.
 
 ## Architectural Standards
-- Establish a Modular Monolith standard: Treat new self-contained features without root-app dependencies as local packages.
+- Establish a Modular Monolith standard: Implement new feature areas as local packages/modules by default. Packages may extend and integrate with the root application, including access to shared root-level capabilities, while keeping feature implementation, boundaries, and ownership outside the root project to prevent uncontrolled growth.
 - **Filament vs. Custom Livewire:** Use Filament for CRUD-oriented record management (list, create, edit, delete). For read-only analytics views, dashboards, or custom layouts where you need full control over markup and styling, use a custom Livewire component with Blade inside a Filament Page shell.
 
 ## Interaction Guidelines
