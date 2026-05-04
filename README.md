@@ -12,3 +12,9 @@ rm -rf ./.git \
 && git switch -c dev \
 && git switch -c dev_ai
 ```
+
+```shell
+cp .env.example .env
+
+cp compose.prod.yaml compose.yaml
+```
