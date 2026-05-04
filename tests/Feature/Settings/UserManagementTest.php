@@ -1,11 +1,8 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
-
-uses(RefreshDatabase::class);
 
 test('user management page is displayed', function () {
     $this->actingAs(User::factory()->create());

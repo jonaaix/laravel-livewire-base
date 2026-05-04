@@ -2,11 +2,8 @@
 
 use App\Models\AppSetting;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Fortify\Features;
 use Livewire\Livewire;
-
-uses(RefreshDatabase::class);
 
 test('workspace settings page is displayed', function () {
     $this->actingAs(User::factory()->create());
