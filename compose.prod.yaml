@@ -33,6 +33,9 @@ services:
 
             caddy_1: ws.${LARAVEL_DOMAIN}
             caddy_1.reverse_proxy: "{{upstreams 8080}}"
+
+            caddy_2: vite.${LARAVEL_DOMAIN}
+            caddy_2.reverse_proxy: "{{upstreams 5178}}"
         restart: unless-stopped
         networks:
             - main-proxy
