@@ -78,6 +78,44 @@ Header content belongs in one of two places:
   action slot unless the card is known to be wide enough (it usually isn't —
   when it gets narrow, filters wrap and look broken).
 
+## Data tables
+
+Plain `<table>` over `<flux:table>` — header tint and divider control matter
+more than the convenience.
+
+- Container: `overflow-hidden rounded-xl ring-1 ring-zinc-950/5
+  dark:ring-white/10`.
+- Header: `bg-zinc-50 dark:bg-zinc-800/50`, `text-zinc-500 font-medium`,
+  cells `px-4 py-2.5`.
+- Body: `bg-white dark:bg-zinc-900`, `divide-y divide-zinc-200
+  dark:divide-zinc-700` on `<tbody>`. No stripes.
+- Cells `px-4 py-3 text-sm`; secondary columns (timestamps) `text-zinc-600
+  dark:text-zinc-400`.
+- First column `font-medium` to anchor the row.
+- Inline one-bit signals next to the data they qualify (verified icon next
+  to email) instead of a dedicated column.
+- Relative dates with absolute in `title`. `—` for null, not "Never".
+- Actions rightmost: ghost `xs` icon+label. Hide destructive actions on
+  self-rows, don't disable them.
+- Empty state: single row, `colspan` full, muted center text, `py-8`.
+
+Confirms: `wire:confirm` for single-step destructive actions, modal only
+when the prompt needs body content.
+
+## Settings forms
+
+Settings need visible boundaries and a clear label-to-control link.
+
+- **Wrap every control in a container** (card, panel, fieldset) — even
+  alone on a page. A lone control without a boundary reads as decoration,
+  not as a meaningful action.
+- **Place label beside the control, not above it, in sparse layouts.** Eye
+  reads "label → control" as one unit. Stacked label-above-control only
+  fits dense forms where many fields share a narrow column.
+- **Group related settings, separate unrelated ones.** Same container with
+  subtle dividers when fields belong together; separate containers when
+  they don't.
+
 ## Interactive controls
 
 - Prefer **compact dropdowns** (active-only + chevron) over full button rows

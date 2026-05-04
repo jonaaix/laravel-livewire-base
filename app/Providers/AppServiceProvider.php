@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Horizon\Http\Middleware\Authenticate;
@@ -29,6 +31,10 @@ class AppServiceProvider extends ServiceProvider
         \Gate::define('viewLogViewer', static fn ($user) => $user?->hasRole('admin'));
 
         $this->configureDefaults();
+
+        Event::listen(Login::class, function (Login $event): void {
+            $event->user->forceFill(['last_login_at' => now()])->saveQuietly();
+        });
     }
 
     /**

@@ -5,6 +5,15 @@
 
 This is a **prototyping playground** for a non-technical user. Its purpose: a space for the user to explore ideas, with you (Claude) as the implementer.
 
+## Production-grade environment
+
+There is **no separate local / staging / production split**. The container you are working in is the live deployment that the user (and possibly others) actually uses, reachable at `APP_URL`. Treat every change as if it were going to production:
+- **Never seed test users, fake records, lorem-ipsum content, or demo data into the database.** The DB belongs to the real user, not to you. The only legitimate exception is your own dedicated `Claude Bot` user (see "Authenticated browser testing").
+- If you need realistic data to verify a feature visually (e.g. for a screenshot of a populated table), create the rows transiently, take the screenshot, and then **delete them immediately** in the same task. Do not leave them lying around for later cleanup.
+- Never run `migrate:fresh`, `migrate:refresh`, `db:wipe`, or anything that drops data. If a destructive DB operation seems necessary, stop and ask the user first.
+- Treat seeders and factories the same way: only commit ones that are safe to run on a production DB (idempotent, package data, etc.). Demo seeders belong in tests, not in `database/seeders/DatabaseSeeder`.
+- Schema changes go through normal forward-only migrations. No editing already-applied migrations after the fact.
+
 ## App capabilities
 
 This is a full-featured Laravel base project. Everything listed below is installed and ready to use — no setup required.
@@ -46,13 +55,13 @@ This is a full-featured Laravel base project. Everything listed below is install
 ### Observability & Maintenance
 
 - **opcodesio/log-viewer** — web-based log viewer
-- **aaix/laravel-smart-log** — structured logging (prefer `SmartLog::` over `Log::`)
 - **aaix/laravel-easy-backups** — database and file backups
 
 ### Internationalization
 
 - **aaix/eloquent-translatable** — model translations
 - **outhebox/blade-flags** — country flag icons
+- **aaix/laravel-countries** — A comprehensive country package
 
 ### Services (docker-compose)
 
@@ -186,6 +195,44 @@ Header content belongs in one of two places:
   pickers. Filters need breathing room; don't cram them into the header
   action slot unless the card is known to be wide enough (it usually isn't —
   when it gets narrow, filters wrap and look broken).
+
+## Data tables
+
+Plain `<table>` over `<flux:table>` — header tint and divider control matter
+more than the convenience.
+
+- Container: `overflow-hidden rounded-xl ring-1 ring-zinc-950/5
+  dark:ring-white/10`.
+- Header: `bg-zinc-50 dark:bg-zinc-800/50`, `text-zinc-500 font-medium`,
+  cells `px-4 py-2.5`.
+- Body: `bg-white dark:bg-zinc-900`, `divide-y divide-zinc-200
+  dark:divide-zinc-700` on `<tbody>`. No stripes.
+- Cells `px-4 py-3 text-sm`; secondary columns (timestamps) `text-zinc-600
+  dark:text-zinc-400`.
+- First column `font-medium` to anchor the row.
+- Inline one-bit signals next to the data they qualify (verified icon next
+  to email) instead of a dedicated column.
+- Relative dates with absolute in `title`. `—` for null, not "Never".
+- Actions rightmost: ghost `xs` icon+label. Hide destructive actions on
+  self-rows, don't disable them.
+- Empty state: single row, `colspan` full, muted center text, `py-8`.
+
+Confirms: `wire:confirm` for single-step destructive actions, modal only
+when the prompt needs body content.
+
+## Settings forms
+
+Settings need visible boundaries and a clear label-to-control link.
+
+- **Wrap every control in a container** (card, panel, fieldset) — even
+  alone on a page. A lone control without a boundary reads as decoration,
+  not as a meaningful action.
+- **Place label beside the control, not above it, in sparse layouts.** Eye
+  reads "label → control" as one unit. Stacked label-above-control only
+  fits dense forms where many fields share a narrow column.
+- **Group related settings, separate unrelated ones.** Same container with
+  subtle dividers when fields belong together; separate containers when
+  they don't.
 
 ## Interactive controls
 

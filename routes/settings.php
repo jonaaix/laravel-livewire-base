@@ -7,6 +7,8 @@ Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
     Route::livewire('settings/profile', 'pages::settings.profile')->name('profile.edit');
+    Route::livewire('settings/workspace', 'pages::settings.workspace')->name('workspace.edit');
+    Route::livewire('settings/users', 'pages::settings.users')->name('users.edit');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
