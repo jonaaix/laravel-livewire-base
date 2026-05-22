@@ -1,201 +1,152 @@
 # Design Taste
 
-General visual preferences the project owner has approved. Apply these broadly
-to any new UI — admin panel, settings pages, custom forms, analytics views,
-etc. These are rules of thumb, not absolutes; use judgement when a specific
-context calls for something different.
+Visual baseline for any new UI. Tailwind class names are used as shorthand
+for spacing/color/size decisions — values matter, syntax adapts.
 
-Utility-class names below use Tailwind vocabulary because it's the most
-compact way to express spacing, color, and size decisions. Translate to your
-styling tool of choice — the *values* (sizes, hues, rhythm) are what matter,
-not the syntax.
+## Snappy UI — JS first
+
+UI must feel instant. Page turns, full reloads, and visible server
+roundtrips are bugs, not defaults.
+
+- **JS first.** Interactions (toggle, filter, sort, expand, tab switch,
+  inline edit) run client-side. Alpine.js is default; standalone Vue island
+  when Alpine becomes unreadable. Server only for actual mutations or data
+  not yet in the DOM.
+- **Optimistic UI.** Mutations flip UI state immediately; server confirms
+  in background. On failure: rollback + toast. Never spinner-until-200.
+- **Lazy loading.** Above-the-fold first; rest via `wire:lazy`,
+  `loading="lazy"`, or IntersectionObserver. Long lists → virtual scroll or
+  paginate-on-scroll.
+- **Skeletons over spinners.** Show layout shape, not a centered loader —
+  prevents CLS, feels faster.
+- **Preload next.** Hover-prefetch on links/pagination (`wire:navigate`
+  default, leave on).
+- **No page turns for in-place updates.** Filters, sort, tabs → partial or
+  client-side. Full reload only when route truly changes content.
+- **Pre-render variants, toggle visibility.** DOM cost beats roundtrip
+  latency. Persist tab/expand state to `localStorage` scoped per-record.
+- **Mixed is fine.** Tabs swap client-side; "Show all (N)" hits server
+  because it changes the query limit.
 
 ## Baseline
 
-Tailwind UI-adapted styling in a professional business schema — subtle,
+Tailwind UI-adapted styling, professional business schema — subtle,
 data-dense, not flashy.
 
 ## Color
 
-- **Derive, don't hardcode.** When multiple accent colors are needed, derive
-  them from the active primary color via HSL hue shifts (+60°, +120°, +180°,
-  and a desaturated muted variant). Hardcoded hex values are acceptable only
-  as **sentinels** that a theme layer later replaces with derived values.
-- Keep neutrals (true gray) for text, borders, disabled states. Don't tint
-  every gray with primary — it gets noisy.
-- Status semantics (red = error, green = success) override derived palettes.
-  Don't let a green primary break "error is red."
+- **Derive, don't hardcode.** Multiple accents → HSL hue shifts off primary
+  (+60°, +120°, +180°, muted). Hex literals only as sentinels for a theme
+  layer to replace.
+- Neutrals stay true gray for text/borders/disabled. Don't tint every gray.
+- Status semantics (red=error, green=success) override derived palettes.
 
 ## Containers & cards
 
-- Rounded corners: `rounded-xl` for cards, `rounded-md` for small pills,
-  `rounded-lg` for icon boxes.
-- Cards: white background + subtle ring, not heavy shadows —
-  `bg-white dark:bg-gray-900 shadow-sm ring-1 ring-gray-950/5 dark:ring-white/10`.
-- Compact internal padding — `p-3` for sub-cards, `p-5` for full dashboard
-  cards. More padding feels wasteful.
+- Corners: `rounded-xl` cards, `rounded-md` pills, `rounded-lg` icon boxes.
+- Cards: `bg-white dark:bg-gray-900 shadow-sm ring-1 ring-gray-950/5
+  dark:ring-white/10`. Ring, not heavy shadow.
+- Padding: `p-3` sub-cards, `p-5` dashboard cards. More feels wasteful.
 
 ## Typography & density
 
-- Data-dense views (tables, lists): prefer small text (`text-sm` or `text-xs`)
-  with tight vertical rhythm (`py-0.5` to `py-1.5` per row) — more info visible
-  without scrolling beats generous spacing.
-- Avoid large vertical padding inside cards. Users should see content, not
+- Data-dense views: `text-sm`/`text-xs`, `py-0.5`–`py-1.5` rows. Info beats
   whitespace.
-- Long user-generated strings: truncate with ellipsis rather than wrap.
-  Layout integrity > full text visibility.
+- Long user strings: truncate with ellipsis, never wrap.
 
 ## Icons
 
-- Always pair an icon with a heading or stat value — icons anchor the eye and
-  make scanning faster.
-- Two standard sizes:
-  - **Prominent** (stat numbers, card headers): 32×32 box, 16×16 SVG,
-    `rounded-lg`, tinted primary background (`bg-primary-50
-    dark:bg-primary-900/30`). This is the default — use it unless you have a
-    reason to go smaller.
-  - **Compact** (dense table rows, micro headers): 24×24 box, 14×14 SVG, same
-    tint. Exception, not the rule.
+- Always pair an icon with a heading or stat value.
+- **Prominent** (default): 32×32 box, 16×16 SVG, `rounded-lg`,
+  `bg-primary-50 dark:bg-primary-900/30`.
+- **Compact** (dense rows only): 24×24 box, 14×14 SVG, same tint.
 - Never a bare SVG — the tinted box gives consistency.
 
 ## Card headers
 
-Every dashboard card uses the same header shape: a tinted icon box + title
-on the left, optional count badge + action slot on the right, separated by a
-bottom border that spans edge to edge of the card.
+Tinted icon box + title left, count badge + action slot right, bottom
+border edge to edge. Wrap as a reusable component.
 
-Implementation note: if the card uses internal padding (e.g. `p-5`), the
-header needs to cancel that padding with negative margins (`-mx-5 -mt-5`) so
-the border-b spans the full width. Wrap the pattern in a reusable component
-so every card calls it the same way.
+If the card uses `p-5`, the header cancels it with `-mx-5 -mt-5` so the
+border spans full width.
 
-Header content belongs in one of two places:
-
-- **Header row (action slot)**: actions that belong to the whole card —
-  create buttons, reset, a settings menu. Keep it to 3–4 items.
-- **Dedicated filter row below**: search inputs, type/period selects, year
-  pickers. Filters need breathing room; don't cram them into the header
-  action slot unless the card is known to be wide enough (it usually isn't —
-  when it gets narrow, filters wrap and look broken).
+- **Action slot:** whole-card actions (create, reset, settings). Max 3–4.
+- **Filter row below:** search, selects, year pickers. Filters need
+  breathing room — don't cram into action slot.
 
 ## Data tables
 
-Plain `<table>` over `<flux:table>` — header tint and divider control matter
-more than the convenience.
+Plain `<table>` over `<flux:table>` — header tint and divider control
+matter more.
 
 - Container: `overflow-hidden rounded-xl ring-1 ring-zinc-950/5
   dark:ring-white/10`.
 - Header: `bg-zinc-50 dark:bg-zinc-800/50`, `text-zinc-500 font-medium`,
   cells `px-4 py-2.5`.
-- Body: `bg-white dark:bg-zinc-900`, `divide-y divide-zinc-200
-  dark:divide-zinc-700` on `<tbody>`. No stripes.
-- Cells `px-4 py-3 text-sm`; secondary columns (timestamps) `text-zinc-600
-  dark:text-zinc-400`.
-- First column `font-medium` to anchor the row.
-- Inline one-bit signals next to the data they qualify (verified icon next
-  to email) instead of a dedicated column.
+- Body: `bg-white dark:bg-zinc-900`, `tbody` gets `divide-y divide-zinc-200
+  dark:divide-zinc-700`. No stripes.
+- Cells `px-4 py-3 text-sm`; secondary columns `text-zinc-600
+  dark:text-zinc-400`. First column `font-medium`.
+- Inline one-bit signals next to the data (verified icon next to email),
+  not a dedicated column.
 - Relative dates with absolute in `title`. `—` for null, not "Never".
-- Actions rightmost: ghost `xs` icon+label. Hide destructive actions on
-  self-rows, don't disable them.
-- Empty state: single row, `colspan` full, muted center text, `py-8`.
-
-Confirms: `wire:confirm` for single-step destructive actions, modal only
-when the prompt needs body content.
+- Actions rightmost: ghost `xs` icon+label. Hide destructive on self-rows.
+- Empty state: single row, `colspan` full, muted center, `py-8`.
+- Destructive: `wire:confirm` for single-step, modal only when prompt
+  needs body content.
 
 ## Settings forms
 
-Settings need visible boundaries and a clear label-to-control link.
-
-- **Wrap every control in a container** (card, panel, fieldset) — even
-  alone on a page. A lone control without a boundary reads as decoration,
-  not as a meaningful action.
-- **Place label beside the control, not above it, in sparse layouts.** Eye
-  reads "label → control" as one unit. Stacked label-above-control only
-  fits dense forms where many fields share a narrow column.
-- **Group related settings, separate unrelated ones.** Same container with
-  subtle dividers when fields belong together; separate containers when
-  they don't.
+- **Wrap every control in a container.** A lone control without boundary
+  reads as decoration.
+- **Label beside control in sparse layouts**, stacked only in dense forms.
+- Group related settings in one container with dividers; separate
+  unrelated ones into distinct containers.
 
 ## Interactive controls
 
-- Prefer **compact dropdowns** (active-only + chevron) over full button rows
-  when the list of options is > 3. Button rows are visually loud.
-- Two-tier action styling:
-  - **Primary action** or attention-worthy: tinted primary —
-    `bg-primary-100 text-primary-800 hover:bg-primary-200` (light tint, not
-    the saturated `primary-500`).
-  - **Secondary action** or repeat use: neutral gray —
-    `bg-gray-100 text-gray-600 hover:bg-gray-200`.
-- Pure saturated `primary-500` backgrounds on controls feel too loud for
-  persistent UI. Reserve for one-off CTAs (submit buttons, confirmations).
-- Micro-controls (pill-style period switchers, badges): `px-1.5 py-0.5
-  text-[10px] font-medium rounded`.
+- Compact dropdowns (active + chevron) over button rows when options > 3.
+- Two-tier styling:
+  - **Primary:** tinted — `bg-primary-100 text-primary-800
+    hover:bg-primary-200`. Not saturated `primary-500`.
+  - **Secondary:** neutral — `bg-gray-100 text-gray-600 hover:bg-gray-200`.
+- Saturated `primary-500` only for one-off CTAs (submit, confirm).
+- Micro-controls (period pills, badges): `px-1.5 py-0.5 text-[10px]
+  font-medium rounded`.
 
-### Card header controls (unified style)
+### Card header controls (unified)
 
-Inside a card header, buttons, selects, and search inputs share one base
-style so they line up:
+Buttons, selects, search inputs share one base so they align:
+`bg-gray-50 dark:bg-gray-800`, `border-gray-200 dark:border-gray-700`,
+`rounded-lg`, `px-2 py-1 text-xs`, primary focus ring. Buttons get hover
+tint; inputs/selects don't.
 
-- Background `bg-gray-50` (dark `bg-gray-800`), border `border-gray-200`
-  (dark `border-gray-700`), `rounded-lg`, `px-2 py-1 text-xs`.
-- Focus ring uses primary.
-- Buttons add a hover tint (`hover:bg-gray-100` / dark `hover:bg-gray-700`);
-  inputs/selects don't.
-
-Apply consistently:
-
-- Use a plus icon for every "create new" button — the icon signals the verb,
-  not the noun (Cart, Project, Invoice all use plus).
-- Search input: magnifier icon absolute-positioned inside the input on the
-  left, input padded left to make room. Never a separate icon button.
-- Reset-filters button: icon-only, neutral gray, only render when at least
-  one filter is active.
+- "Create new" buttons always plus-icon (verb signal, noun-independent).
+- Search input: magnifier icon absolute-positioned inside, padded left.
+  Never a separate icon button.
+- Reset-filters: icon-only, neutral gray, only when ≥1 filter active.
 
 ## Layout & grids
 
-- **Auto-fit over fixed grids.** For card grids, use `grid-template-columns:
-  repeat(auto-fit, minmax(<min>, 1fr))` so cards reflow with viewport width.
-  Don't hardcode "3 columns on xl, 2 on md" unless content genuinely demands
-  it.
-- Items in the same row should have equal heights — use `h-full` on the child
-  + a sensible `max-h-[Npx]` on the card root to prevent runaway growth.
-- Internal scrolling (tables within cards) belongs on the **inner scrollable
-  region**, not the card itself. Header + controls stay fixed, only the
-  content scrolls.
+- **Auto-fit over fixed grids:** `repeat(auto-fit, minmax(<min>, 1fr))`.
+  Don't hardcode column counts unless content demands it.
+- Same-row items equal height: `h-full` + sensible `max-h-[Npx]` on card
+  root.
+- Internal scroll belongs on the inner region. Header + controls stay
+  fixed, content scrolls.
 
 ## Charts
 
-- Fixed pixel height for charts, not `100%` — the latter triggers feedback
-  loops with flex containers.
-- Primary series uses the derived primary; additional series pull from the
-  derived palette (see "Color"). Never hardcode violet/green/etc. beyond the
-  sentinels.
-- Subtle themes: grid border adapts to dark mode, legend stays top, labels
-  inherit the page font.
+- Fixed pixel height, not `100%` (latter triggers flex feedback loops).
+- Primary series = derived primary; additional series from derived
+  palette. Never hardcode violet/green/etc.
+- Grid adapts to dark mode, legend top, labels inherit page font.
 
 ## Read-only vs. CRUD pages
 
-- **Read-only analytics/overview pages**: prefer a single JSON endpoint with
-  client-side state and `localStorage` stale-while-revalidate. Don't hydrate
-  widget-by-widget; don't recompute on every visit.
-- **CRUD resources**: use whatever admin-panel tool the stack provides — it
-  handles listing, filtering, forms, authorization better than rolling your
-  own.
-- Cache expensive computations at the backend (e.g. Redis until end-of-day)
-  and cache display-ready payloads at the frontend.
-
-## Client-side state vs. server roundtrips
-
-- For **pure UI state** (tab switching, accordion toggling, dropdown
-  open/close, show/hide of preloaded content), flip visibility on the client.
-  A server roundtrip for "switch which div is visible" feels laggy and
-  wastes server time.
-- Pre-render all variants in the DOM and toggle visibility client-side. The
-  DOM size cost is almost always cheaper than the latency of a round trip.
-- Persist tab/expand state to `localStorage` (scoped per-record so different
-  entities don't share state) so reloads don't lose context.
-- Reserve server roundtrips for things that genuinely need fresh data:
-  re-querying with new filters, mutating data, validating forms.
-- Mixed pattern is often best: client handles cheap UI ops instantly, server
-  handles expensive data ops. Example — tabs swap client-side, but "Show all
-  (N)" goes through the server because it changes the DB-query limit.
+- **Read-only analytics/overview:** single JSON endpoint, client state,
+  `localStorage` stale-while-revalidate. Don't hydrate widget-by-widget.
+- **CRUD:** use the stack's admin tool — handles listing, filtering,
+  forms, authz better than rolling your own.
+- Cache expensive computations backend (Redis until end-of-day) and cache
+  display-ready payloads frontend.

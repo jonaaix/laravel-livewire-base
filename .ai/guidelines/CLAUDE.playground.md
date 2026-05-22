@@ -101,8 +101,11 @@ This is a full-featured Laravel base project. Everything listed below is install
 ## Frontend stack boundaries
 - **Livewire + Volt** is the interactivity layer. Single-file Volt components are the fastest path — prefer them.
 - **Plain Blade + Tailwind** for static pages with no interactivity.
+- **Alpine.js** — default for client-side interactions. Encouraged in every Volt/Blade component (see design-taste "Snappy UI — JS first").
+- **Vue.js (standalone, no Inertia)** — allowed when a widget has enough client-side complexity that Alpine becomes unreadable (e.g. complex forms with nested lists, drag-and-drop boards, custom editors). Mount via `createApp().mount('#widget-id')` into an isolated island.
+- **Inertia (Vue)** — use for a coherent cluster of complex Vue views that navigate between each other (e.g. a full editor area with sidebar + detail + preview). Not for one-off widgets — use standalone Vue for those. It's a second paradigm in the codebase, so the cluster has to be big enough to justify it; if in doubt, island Vue.
 - **Filament** — install on demand ONLY when the user explicitly asks for an admin panel or heavy CRUD management. Do not reach for it for public pages, dashboards, or custom flows — it is opinionated and fights non-CRUD use cases.
-- **Vue / React / Inertia** — do not use unless the user explicitly asks.
+- **React** — do not use unless the user explicitly asks.
 
 ## Output back to the user
 - Data/reports → files in the workspace, reference by path. The user can retrieve them from the container.
