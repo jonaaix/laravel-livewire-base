@@ -26,6 +26,7 @@ services:
             ENABLE_HORIZON_WORKER: true
             ENABLE_REVERB_SERVER: true
             ENABLE_CLAUDE_THREADS: true
+            ENABLE_AI_NONTECH_MODE: true
         labels:
             caddy_0: ${LARAVEL_DOMAIN}
             caddy_0.reverse_proxy: "{{upstreams 8000}}"
@@ -81,7 +82,7 @@ services:
         restart: unless-stopped
 
     pma:
-        image: phpmyadmin/phpmyadmin:latest
+        image: phpmyadmin:latest
         environment:
             PMA_HOST: mysql
             PMA_PORT: 3306
