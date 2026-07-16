@@ -73,7 +73,7 @@ services:
         restart: unless-stopped
 
 #    pma:
-#        image: phpmyadmin/phpmyadmin:latest
+#        image: phpmyadmin:latest
 #        environment:
 #            PMA_HOST: mysql
 #            PMA_PORT: 3306
