@@ -94,8 +94,5 @@
         </div>
     </main>
 
-    <footer class="absolute inset-x-0 bottom-0 z-10 flex items-center justify-center p-6 text-xs text-zinc-500 dark:text-zinc-500">
-        <span>{{ config('app.name') }} &middot; {{ now()->year }}</span>
-    </footer>
 </body>
 </html>
