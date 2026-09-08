@@ -1,118 +1,129 @@
-# Project context
+# Playground Project
 
-This is a **prototyping playground** for a non-technical user. Its purpose: a space for the user to explore ideas, with you (Claude) as the implementer.
+This repository is a prototyping playground. The user explores ideas, you implement them.
+Role, code style, architecture, planning, design and communication rules come from the
+TALL Architect guidelines below — this file only adds what is specific to this workspace.
 
 ## Workspace model
-**The Laravel app at `/app` IS the playground.** It is meant to grow continuously — new routes, models, migrations, Livewire components, services are the default, not the exception. Most user features land here. Do not invent reasons to keep new work out of the Laravel app.
+
+**The Laravel app IS the playground.** It is meant to grow continuously — new routes,
+models, migrations, islands and services are the default, not the exception. Do not invent
+reasons to keep new work out of it.
 
 Three places code can live:
-- **Core app** — shared infrastructure: auth, users, settings, layout, generic utilities. Stays small.
-- **Internal modules** (`app/Modules/<Module>/`) — coherent feature areas with their own data model. Mandatory once a feature introduces its own tables.
-- **Sideprojects** (`/app/sideprojects/<name>/`) — anything that doesn't live inside the Laravel app. Any language. Self-contained per folder.
 
-## When to use which
-- **Core app** — small additions with no own data model.
-- **Internal module — DEFAULT once a feature has its own table(s).** Threshold is low: even a single dedicated table → module. Better small-module than scattered core code.
-- **Sideproject** — one-shot non-interactive work (output: files), or anything that doesn't fit in the Laravel stack. Otherwise: module.
-- **Mixed** — fine to have a sideproject produce data and a module consume/visualize it.
+- **Core app** — shared infrastructure: auth, users, settings, layout, generic utilities.
+  Stays small. Only small additions with no own data model land here.
+- **Internal module** (`app/Modules/<Module>/`) — the default as soon as a feature has its
+  own table(s). The threshold is low: a single dedicated table is enough. A small module
+  beats scattered core code.
+- **Sideproject** (`sideprojects/<name>/`) — anything outside the Laravel stack: one-shot
+  non-interactive work whose output is files, or another language entirely. Self-contained
+  per folder, with its own isolated dependencies (venv, own `package.json`).
 
-## Module structure
-Once a feature gets its own table(s), it lives in `app/Modules/<ModuleName>/`.
+A sideproject producing data that a module consumes and visualizes is a fine split.
 
-- **Table prefix mandatory:** `<module>_<table>` (e.g. `gads_keywords`). Non-negotiable.
-- **Folder:** `Models/`, `Livewire/`, `Services/`, `Jobs/`, `routes.php`, `resources/views/`.
-- **Namespace:** `App\Modules\<Module>\…` (PSR-4 wildcard in root `composer.json`).
-- **Routes:** module's own `routes.php`, mounted with path prefix matching module name.
-- **Migrations:** stay in `database/migrations/`; filename + table carry the prefix.
-- **Translations:** `lang/<locale>/<module>.php` → `__('gads.dashboard.title')`.
-- **Views:** view namespace `<module>::` (e.g. `view('gads::dashboard')`).
-- **No per-module composer.json / ServiceProvider.** A central `ModulesServiceProvider` auto-wires routes/views/translations/Livewire by scanning `app/Modules/*`.
-- A module is **deletable as a unit:** drop prefixed tables + delete folder.
+## Module layout
 
-## Production-grade environment
-The container you are working in is the live deployment the user (and possibly others) actually uses, reachable at `APP_URL`. There is **no separate local / staging / production split**.
+A module owns the backend half of a feature: its tables, models, services and jobs.
 
-**This does not mean "be conservative about extending the app."** Adding features, modules, routes, migrations is exactly what this environment exists for. What it means: **protect the user's data and the integrity of the live system.**
+- **Namespace:** `App\Modules\<Module>\…` — already covered by the root `App\` → `app/`
+  PSR-4 mapping, so a new module needs no `composer.json` change.
+- **Folder:** `Models/`, `Services/`, `Jobs/`, `routes.php`, `resources/views/`.
+- **Routes:** the module's own `routes.php`, mounted by the provider under the kebab-cased
+  module name with a matching route-name prefix and the `web` middleware — `Gads` serves
+  `/gads/…` as `gads.…`. These are the pages that host the module's islands.
+- **Migrations:** stay in `database/migrations/`; filename and table carry the module prefix.
+- **Translations:** `lang/<locale>/<module>.php` → `__('gads.dashboard.title')`. The root
+  lang directory is loaded by Laravel itself; nothing to wire.
+- **Views:** `resources/views/` in the module, registered under the kebab-cased namespace
+  → `view('gads::dashboard')`.
+- **No per-module `composer.json` or ServiceProvider.** `App\Providers\ModulesServiceProvider`
+  scans `app/Modules/*` and wires routes and views. Both files are optional — a module with
+  neither is still a valid module.
+- **The module's UI lives in `app/Islands/`, not inside the module folder.** Islands are
+  discovered from that one configured root. Name them after the module so the pair is
+  obvious, and keep the island thin: it reads and writes through the module's services.
 
-- **Never seed test users, fake records, lorem-ipsum content, or demo data into the database.** The DB belongs to the real user, not to you. The only legitimate exception is your own dedicated `Claude Bot` user (see "Authenticated browser testing").
-- If you need realistic data to verify a feature visually (e.g. for a screenshot of a populated table), create the rows transiently, take the screenshot, and then **delete them immediately** in the same task. Do not leave them lying around for later cleanup.
-- Never run `migrate:fresh`, `migrate:refresh`, `db:wipe`, or anything that drops data. If a destructive DB operation seems necessary, stop and ask the user first.
-- Treat seeders and factories the same way: only commit ones that are safe to run on a production DB (idempotent, package data, etc.). Demo seeders belong in tests, not in `database/seeders/DatabaseSeeder`.
-- Schema changes go through normal forward-only migrations. No editing already-applied migrations after the fact.
+## Live environment
 
-## App capabilities
-This is a full-featured Laravel base project. Everything listed below is installed and ready to use — no setup required.
+The container you work in is the deployment the user actually uses, reachable at `APP_URL`.
+There is no local / staging / production split. This is not a reason to be conservative
+about extending the app — it is a reason to protect the user's data.
 
-### UI & Frontend
-- **Livewire 4 + Volt** — interactive UI as single-file components
-- **Flux UI** — default component library (`<flux:*>`)
-- **Tailwind CSS 4** — utility-first styling
-- **Echo + Pusher.js** — client-side real-time event listening
+- Never seed test users, fake records or demo content into the database. The only exception
+  is your own `Claude` user for app access.
+- Rows created to populate a screenshot are deleted in the same task.
+- Demo seeders belong in tests, never in `database/seeders/DatabaseSeeder`.
 
-### Backend & Infrastructure
-- **Horizon** — queue management and monitoring dashboard
-- **Reverb** — WebSocket server for real-time broadcasting, presence channels, live updates
-- **Scout + Meilisearch** — full-text search (add `Searchable` trait to any model)
-- **Fortify** — authentication (login, registration, 2FA, email verification)
-- **Scheduled tasks** — Laravel scheduler via supercronic
+## Frontend
 
-### AI
-- **laravel/ai** — first-party AI SDK. Text generation, image generation, agents, embeddings, structured output. Supports OpenAI, Anthropic, Gemini, and more.
+**Islands are the primary frontend.** A feature view is an island — `aaix/laravel-islands`
+for the view itself, `aaix/laravel-islands-datagrid` for anything list-shaped. Both ship a
+full set of helper components, composables and hosts; read the `islands-development`,
+`islands-datagrid-development` and `ui-patterns` skills before writing markup. A
+hand-rolled modal, tooltip, toolbar or sort menu that already exists behind a one-line
+import is the most common avoidable diff here.
 
-### Data & Files
-- **spatie/laravel-data** — typed DTOs and transformation
-- **spatie/laravel-pdf + Browsershot** — render Blade views as PDFs
-- **spatie/simple-excel** — Excel/CSV import and export
-- **spatie/temporary-directory** — temp directories with auto-cleanup
-- **Intervention Image** — image manipulation (resize, crop, watermark, format conversion)
-- **aaix/laravel-patches** — data patches (schema-independent data migrations, run once)
-- **webklex/laravel-imap** — read and process incoming emails
-- **Pandoc** — universal document format conversion (Markdown, DOCX, HTML, LaTeX, EPUB, ...)
+- **Blade + Alpine** for static pages and local interactivity that owns no server state.
+- **Livewire and Flux carry the existing shell only** — auth pages, settings pages, layout
+  and navigation under `resources/views/pages/` and `resources/views/layouts/`. Work on
+  those where they are, and follow their conventions. Do not extend them into feature
+  territory, and do not reach for `<flux:*>` or a new Livewire component for a new view.
+- **Filament** only when the user explicitly asks for an admin panel or heavy CRUD.
+- **React and Inertia** are not used in this project.
 
-### Notifications
-- **WebPush** — browser push notifications
+### Public pages are server-rendered
 
-### Observability & Maintenance
-- **opcodesio/log-viewer** — web-based log viewer
-- **aaix/laravel-easy-backups** — database and file backups
+**An island renders nothing on the server.** `<x-island>` emits an empty `<div>` carrying a
+JSON payload in a data attribute; the markup only exists once Vue has mounted. A crawler,
+a link preview or anything else that does not run JavaScript sees an empty page.
 
-### Internationalization
-- **aaix/eloquent-translatable** — model translations
-- **outhebox/blade-flags** — country flag icons
-- **aaix/laravel-countries** — A comprehensive country package
+So the boundary is indexability, not complexity:
 
-### Services (docker-compose)
-- **MariaDB** — primary database (MySQL-compatible), host: `mariadb`
-- **Redis** — cache, sessions, queues, host: `redis`
-- **Meilisearch** — search engine, host: `meilisearch`
+- **Anything that must be found or previewed is Blade** — a blog post, a landing page,
+  documentation, a public product page. Body copy, headings, links, `<head>` metadata,
+  canonical and structured data are rendered server-side, always.
+- **Islands own what sits behind a login or behind an interaction** — app views, dashboards,
+  data tables, onboarding and checkout forms. Nobody needs to find those in a search engine.
+- **A public page may host an island** for its interactive part, as long as the content that
+  matters for indexing lives in the Blade around it. A blog post is Blade; its comment box
+  can be an island.
 
-### MCP Servers
-- **Playwright MCP** — browser automation, screenshots, scraping, PDF generation
-- **Context7 MCP** — up-to-date library documentation lookup
+When a feature is public-facing, say which half is which before building it.
 
-## UI framework
-- **Flux UI** is the default component library. Use `<flux:input>`, `<flux:button>`, `<flux:modal>`, etc. Check the Flux docs before building anything UI-related.
-- If Flux does not have a suitable component, **choose based on effort**:
-  - **Self-build** a custom Blade/Livewire component if it's a reasonable amount of work (simple form widgets, custom cards, layout pieces). Place it under `resources/views/components/` and match the Flux design language (same spacing, colors, radius). Reuse it.
-  - **Reach for a plugin** when the component is a complex beast on its own — full-featured calendars, rich-text/WYSIWYG editors, advanced data tables, charts, file uploaders, drag-and-drop kanbans. Reinventing these is overkill; pick a well-maintained package and integrate it cleanly.
-- Do NOT write raw Tailwind one-offs for UI elements that could be reused — extract into a component.
-- Do NOT install other general-purpose UI libraries (Flowbite, daisyUI, etc.) — stay on Flux. Specialized plugins for complex widgets are fine.
+Need a widget that neither the island helpers nor Alpine cover? Build it in the island's
+own `Components/` folder in the project's design language, or propose a package when the
+component is a beast on its own (calendars, WYSIWYG editors, charts, file uploaders). Do
+not install general-purpose UI libraries.
 
-## Frontend stack boundaries
-- **Livewire + Volt** is the interactivity layer. Single-file Volt components are the fastest path — prefer them.
-- **Plain Blade + Tailwind** for static pages with no interactivity.
-- **Alpine.js** — default for client-side interactions. Encouraged in every Volt/Blade component (see design-taste "Snappy UI — JS first").
-- **Vue.js (standalone, no Inertia)** — allowed when a widget has enough client-side complexity that Alpine becomes unreadable (e.g. complex forms with nested lists, drag-and-drop boards, custom editors). Mount via `createApp().mount('#widget-id')` into an isolated island.
-- **Inertia (Vue)** — use for a coherent cluster of complex Vue views that navigate between each other (e.g. a full editor area with sidebar + detail + preview). Not for one-off widgets — use standalone Vue for those. It's a second paradigm in the codebase, so the cluster has to be big enough to justify it; if in doubt, island Vue.
-- **Filament** — install on demand ONLY when the user explicitly asks for an admin panel or heavy CRUD management. Do not reach for it for public pages, dashboards, or custom flows — it is opinionated and fights non-CRUD use cases.
-- **React** — do not use unless the user explicitly asks.
+## Available stack
 
-## Output back to the user
-- Data/reports → files in the workspace, reference by path. The user can retrieve them from the container.
-- Interactive things → Livewire route, give the user the URL.
-- Do NOT paste large file contents or long tool outputs into chat — files are cheaper and persistent.
+Everything below is installed and ready — no setup required.
+
+- **UI:** Laravel Islands (+ Datagrid), Tailwind CSS 4, Alpine, ApexCharts, Echo + Pusher.js.
+  Livewire 4 and Flux UI are present for the shell — see Frontend above.
+- **Infrastructure:** Horizon, Reverb, Scout + Meilisearch, Fortify, Laravel scheduler via
+  supercronic.
+- **AI:** `laravel/ai` — text and image generation, agents, embeddings, structured output.
+- **Data & files:** spatie/laravel-data, spatie/laravel-pdf + Browsershot,
+  spatie/simple-excel, spatie/temporary-directory, Intervention Image,
+  aaix/laravel-patches, webklex/laravel-imap, Pandoc.
+- **Notifications:** WebPush.
+- **Observability:** opcodesio/log-viewer, aaix/laravel-easy-backups.
+- **i18n:** aaix/eloquent-translatable, outhebox/blade-flags, aaix/laravel-countries.
+- **Services (docker-compose):** MariaDB (`mariadb`), Redis (`redis`),
+  Meilisearch (`meilisearch`).
+- **MCP:** Laravel Boost, Playwright (browser automation, screenshots), Context7 (library docs).
 
 ## Dependencies
-- Install freely with `composer`, `npm`, `apt-get`, `pip`, `uv`. Sudo is available without password.
-- Isolate sideproject deps (Python venv, separate `package.json`) to avoid conflicts with the Laravel app.
-- When adding a composer/npm package to the Laravel app, explain briefly why it's needed.
+
+Install freely with `composer`, `npm`, `apt-get`, `pip`, `uv` — sudo needs no password.
+Adding one to the Laravel app is not an implementation detail: propose it and say what it
+buys before installing.
+
+## Output
+
+- Data and reports → files in the workspace, referenced by path. Never paste large file
+  contents or long tool output into chat.
+- Interactive things → a route, handed over as a URL.
