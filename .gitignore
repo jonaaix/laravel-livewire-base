@@ -24,3 +24,5 @@ yarn-error.log
 /.playwright-mcp
 compose.yaml
 supervisord.log
+
+.DS_Store
